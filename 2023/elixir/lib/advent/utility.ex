@@ -139,28 +139,6 @@ defmodule Advent.Utility do
 
   def split(contents, splitter) when is_list(contents), do: Enum.map(contents, &split(&1, splitter))
   def split(contents, splitter), do: String.split(contents, splitter, trim: true)
-
-  @doc """
-  Day 8 extra parsing going here to clean up the solutions.
-  """
-  def parse_day8_input!(file_path) do
-    [[instructions] | [nodes]] = parse_input!(file_path, double: true)
-    graph = split(nodes, " = ") |> graph_it(%{})
-
-    {String.graphemes(instructions), graph}
-  end
-
-  defp graph_it([], graph), do: graph
-  defp graph_it([[start, left_right_str] | rest], graph) do
-    left_right_tuple = translate_left_right(left_right_str)
-    graph_it(rest, Map.put(graph, start, left_right_tuple))
-  end
-
-  defp translate_left_right(str) do
-    [left, right] = split(str, ", ")
-
-    {String.replace(left, "(", ""), String.replace(right, ")", "")}
-  end
 end
 
 defmodule Advent.MultiNoMultiError do

@@ -24,7 +24,7 @@ defmodule Advent.UtilityTest do
     test "returns a list of lists containing characters" do
       actual = Utility.parse_input!("test/data/multi_charlist.txt", charlist: true)
 
-      assert(actual == ['abc', 'def'])
+      assert(actual == [~c"abc", ~c"def"])
     end
 
     test "returns a list of lists containing graphemes" do
@@ -54,7 +54,7 @@ defmodule Advent.UtilityTest do
     test "returns a list of characters" do
       actual = Utility.parse_input!("test/data/charlist.txt", multi: false, charlist: true)
 
-      assert(actual == 'abcdef')
+      assert(actual == ~c"abcdef")
     end
 
     test "returns a list of graphemes" do

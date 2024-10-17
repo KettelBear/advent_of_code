@@ -7,20 +7,18 @@ defmodule Advent.Day.Eight do
   def part1 do
     {steps, graph} = parse_day8_input!("#{__DIR__}/input_two.test")
 
-    traverse("AAA", steps, 0, steps, graph)
+    traverse("AAA", steps, steps, graph)
   end
 
-  defp traverse("ZZZ", _steps, count, _step_list, _graph), do: count
-  defp traverse(curr_node, [], count, step_list, graph) do
-    traverse(curr_node, step_list, count, step_list, graph)
+  defp traverse("ZZZ", _steps, _step_list, _graph), do: 0
+  defp traverse(curr_node, [], step_list, graph) do
+    traverse(curr_node, step_list, step_list, graph)
   end
-  defp traverse(curr_node, [direction | steps], count, step_list, graph) do
-    {left, right} = Map.get(graph, curr_node)
-
-    case direction do
-      "L" -> traverse(left, steps, count+1, step_list, graph)
-      "R" -> traverse(right, steps, count+1, step_list, graph)
-    end
+  defp traverse(curr_node, ["L" | steps], step_list, graph) do
+    1 + traverse(Map.get(graph, curr_node) |> elem(0), steps, step_list, graph)
+  end
+  defp traverse(curr_node, ["R" | steps], step_list, graph) do
+    1 + traverse(Map.get(graph, curr_node) |> elem(1), steps, step_list, graph)
   end
 
   @doc false
@@ -57,5 +55,24 @@ defmodule Advent.Day.Eight do
   defp lcm([last]), do: last
   defp lcm([one, two | rest]) do
     lcm([div((one * two), Integer.gcd(one, two)) | rest])
+  end
+
+  defp parse_day8_input!(file_path) do
+    [[instructions] | [nodes]] = parse_input!(file_path, double: true)
+    graph = split(nodes, " = ") |> graph_it(%{})
+
+    {String.graphemes(instructions), graph}
+  end
+
+  defp graph_it([], graph), do: graph
+  defp graph_it([[start, left_right_str] | rest], graph) do
+    left_right_tuple = translate_left_right(left_right_str)
+    graph_it(rest, Map.put(graph, start, left_right_tuple))
+  end
+
+  defp translate_left_right(str) do
+    [left, right] = split(str, ", ")
+
+    {String.replace(left, "(", ""), String.replace(right, ")", "")}
   end
 end
