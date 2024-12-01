@@ -54,9 +54,7 @@ defmodule Mix.Tasks.Gen.Day do
 
     import Advent.Utility
 
-    @doc """
-
-    \"""
+    @doc false
     def part1 do
       "\#{__DIR__}/input.prod"
       |> parse_input!()
@@ -64,9 +62,7 @@ defmodule Mix.Tasks.Gen.Day do
       -1
     end
 
-    @doc """
-
-    \"""
+    @doc false
     def part2 do
       "\#{__DIR__}/input.prod"
       |> parse_input!()
