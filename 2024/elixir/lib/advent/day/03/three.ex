@@ -37,10 +37,4 @@ defmodule Advent.Day.Three do
     end)
     |> elem(0)
   end
-
-  ##############################
-  #                            #
-  #     Used By Both Parts     #
-  #                            #
-  ##############################
 end

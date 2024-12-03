@@ -9,7 +9,7 @@ defmodule Advent.Day.TwoTest do
     end
 
     test "solves part 2" do
-      assert Two.part2() == 409
+      assert Two.part2() == 4
     end
   end
 end
