@@ -56,15 +56,13 @@ defmodule Mix.Tasks.Gen.Day do
 
     @doc false
     def part1 do
-      "\#{__DIR__}/input.prod"
+      "\#{__DIR__}/input.test"
       |> parse_input!()
-
-      -1
     end
 
     @doc false
     def part2 do
-      "\#{__DIR__}/input.prod"
+      "\#{__DIR__}/input.test"
       |> parse_input!()
 
       -1
