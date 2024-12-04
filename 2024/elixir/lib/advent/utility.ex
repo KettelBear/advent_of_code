@@ -57,7 +57,8 @@ defmodule Advent.Utility do
   - `charlist` - (boolean) if `true`, the string input will be returned as a
     charlist. Defaults to `false`.
   - `digits` - (boolean) if `true`, the string input will be broken down into
-    single characters, then each character converted into an integer type.
+    single characters, then each character converted into an integer type. When
+    combined with `grid`, will return a map of {x,y} keys to numerical values.
     Defaults to `false`.
   - `graphemes` - (boolean) if `true`, the string input will be returned as a
     list of single string characters. Can be paired with option, `integers`.
@@ -65,7 +66,8 @@ defmodule Advent.Utility do
   - `grid` - (boolean) if `true`, the string input will be returned as a map of
     coordinates to integers (ex. {1, 4} => 2). It will take the highest priority
     against all options. Cannot be paired with any other Stringbreak option.
-    Defaults to `false`.
+    When combined with `digits` it will treat the values as numbers, will treat
+    as graphemes otherwise. Defaults to `false`.
   - `integers` - (boolean) if `true`, the string input will be returned as a
     list of integers. Can be paired with options; `graphemes`, `split`. Defaults
     to `false`.
@@ -85,6 +87,7 @@ defmodule Advent.Utility do
     file_contents = file_path |> File.read!() |> break_lines(opts)
 
     cond do
+      grid? and digits? -> numerical_grid(file_contents)
       grid? -> grid(file_contents)
       digits? -> digits(file_contents)
       integers? and not is_nil(splitter) -> file_contents |> split(splitter) |> numbers()
@@ -124,10 +127,17 @@ defmodule Advent.Utility do
   defp graphemes(contents) when is_list(contents), do: Enum.map(contents, &graphemes/1)
   defp graphemes(contents), do: String.graphemes(contents)
 
-  defp grid(contents) do
+  defp numerical_grid(contents) do
     for {line, row} <- contents |> digits() |> Enum.with_index(),
         {height, col} <- Enum.with_index(line), into: %{} do
       {{row, col}, height}
+    end
+  end
+
+  defp grid(contents) do
+    for {line, row} <- contents |> graphemes() |> Enum.with_index(),
+        {char, col} <- Enum.with_index(line), into: %{} do
+      {{row, col}, char}
     end
   end
 
