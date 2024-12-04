@@ -4,7 +4,7 @@ defmodule Advent.Day.Four do
   import Advent.Utility
 
   @directions [
-    {-1, -1}, # Lef Up
+    {-1, -1}, # Left Up
     {-1,  0}, # Left
     {-1,  1}, # Left Down
 
